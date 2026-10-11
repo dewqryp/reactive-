@@ -6,12 +6,15 @@ import org.dewqryp.reactive.data.Taco;
 import org.dewqryp.reactive.repositories.TacoRepository;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 public class TacoControllerTest {
@@ -46,6 +49,23 @@ public class TacoControllerTest {
                 .jsonPath("$[12]").doesNotExist();
     }
 
+    @Test
+    public void shouldSaveTaco(){
+        TacoRepository tacoRepository = Mockito.mock(TacoRepository.class);
+        WebTestClient webTestClient = WebTestClient.bindToController(new TacoController(tacoRepository)).build();
+        Mono<Taco> unsavedTacoMono = Mono.just(testTaco(1L));
+        Taco savedTaco = testTaco(1L);
+        Flux<Taco> savedTacoMono = Flux.just(savedTaco);
+        when(tacoRepository.saveAll(any(Mono.class))).thenReturn(savedTacoMono);
+        webTestClient.post().uri("/api/tacos")
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(unsavedTacoMono, Taco.class)
+                .exchange()
+                .expectStatus().isCreated()
+                .expectBody(Taco.class)
+                .isEqualTo(savedTaco);
+
+    }
 
 
     private Taco testTaco(Long number){

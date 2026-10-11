@@ -2,7 +2,9 @@ package org.dewqryp.reactive.controllers;
 
 import org.dewqryp.reactive.data.Taco;
 import org.dewqryp.reactive.repositories.TacoRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.service.annotation.HttpExchange;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -27,6 +29,7 @@ public class TacoController {
     }
 
     @PostMapping(consumes = "application/json")
+    @ResponseStatus(HttpStatus.CREATED)
     public Mono<Taco> save(@RequestBody Mono<Taco> taco){
         return tacoRepository.saveAll(taco).next();
     }
