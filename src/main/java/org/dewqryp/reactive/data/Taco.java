@@ -1,6 +1,5 @@
 package org.dewqryp.reactive.data;
 
-import com.sun.istack.NotNull;
 import jakarta.persistence.*;
 import lombok.Data;
 

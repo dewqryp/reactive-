@@ -21,8 +21,13 @@ public class TacoController {
         return tacoRepository.findAll().take(12);
     }
 
-    @GetMapping("{/id}")
+    @GetMapping("/{id}")
     public Mono<Taco> findById(@PathVariable Long id){
         return tacoRepository.findById(id);
+    }
+
+    @PostMapping(consumes = "application/json")
+    public Mono<Taco> save(@RequestBody Mono<Taco> taco){
+        return tacoRepository.saveAll(taco).next();
     }
 }
