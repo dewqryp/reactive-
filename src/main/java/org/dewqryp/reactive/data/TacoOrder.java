@@ -1,16 +1,14 @@
 package org.dewqryp.reactive.data;
-
-import jakarta.persistence.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
+import org.springframework.data.relational.core.mapping.Table;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Data
-@Entity
-@Table(name="Taco_Order")
+@Table(name="TACO_ORDER")
 public class TacoOrder implements Serializable {
     private String deliveryName;
     private String deliveryStreet;
@@ -22,27 +20,23 @@ public class TacoOrder implements Serializable {
     private String ccCVV;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private Long id;
 
-    private Date createdAt;
 
-    private static final long serialVersionUID = 1L;
 
+    private Set<Long> tacoIds = new HashSet<>();
 
 
 
 
-    @ManyToMany(cascade = CascadeType.PERSIST)
+
+    @Transient
     private List<Taco> tacos = new ArrayList<>();
 
     public void addTaco(Taco taco){
         this.tacos.add(taco);
+        this.tacoIds.add(taco.getId());
     }
 
-    @PrePersist
-    public void placedAt(){
-        this.createdAt = new Date();
-    }
 
 }

@@ -77,7 +77,7 @@ public class TacoControllerTest {
         ingredients.add(new Ingredient("INGB", "Ingredient B", Ingredient.Type.PROTEIN));
         ingredients.add(new Ingredient("INGC", "Ingredient C", Ingredient.Type.CHEESE));
         ingredients.add(new Ingredient("INGD", "Ingredient D", Ingredient.Type.SAUCE));
-        taco.setIngredients(ingredients);
+        taco.addIngredients(ingredients);
         return taco;
 
     }

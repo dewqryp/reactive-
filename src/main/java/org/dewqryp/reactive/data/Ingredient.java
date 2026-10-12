@@ -1,23 +1,22 @@
 package org.dewqryp.reactive.data;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Table;
+import lombok.*;
 
 @Data
-@Entity
 @RequiredArgsConstructor
+@Table
 @NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
 public class Ingredient {
     @Id
-    private final String id;
+    private Long id;
 
-    private final String name;
+    private @NonNull String slug;
 
-    private final Type type;
+    private @NonNull String name;
+
+    private @NonNull Type type;
 
     public enum Type {
         WRAP, PROTEIN, VEGGIES, CHEESE, SAUCE

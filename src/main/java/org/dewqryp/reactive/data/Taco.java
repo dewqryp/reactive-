@@ -1,22 +1,39 @@
 package org.dewqryp.reactive.data;
 
-import jakarta.persistence.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
+import org.springframework.data.relational.core.mapping.Table;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Data
-@Entity
+@NoArgsConstructor
+@RequiredArgsConstructor
+@Table
 public class Taco {
 
-    private String name;
+    private @NonNull String name;
 
-    @ManyToMany
-    private List<Ingredient> ingredients;
+
+    private Set<Long> ingredientIds = new HashSet<>();
+
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private Date createdAt =  new Date();
+    public void addIngredient(Ingredient ingredient) {
+        ingredientIds.add(ingredient.getId());
+    }
+    public void addIngredients(List<Ingredient> ingredients) {
+        for (Ingredient ingredient : ingredients) {
+            addIngredient(ingredient);
+        }
+    }
+
 }
